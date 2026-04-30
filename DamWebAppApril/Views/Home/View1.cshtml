@@ -1,0 +1,36 @@
+﻿<h1>My Frist View :)</h1>
+<style>
+    h1{
+        color:red;
+        background-color:yellow;
+    }
+</style>
+<!--Razor Engin ==> Razor syntx -->
+<!--Block of code-->
+@{
+    //Valid C#
+    int x =10;
+    int y = x+10;//20
+    <h3>hi</h3>
+}
+<!--Inline online return display html body-->
+<h2>@(x+y)</h2> 
+
+<!--Condition statmenet server side-->
+@if (x > y)
+{
+    <h2>X Greater than Y</h2>
+}
+else
+{
+    <h2>X =@x Less Than Y =@y</h2>
+}
+
+<!--Looping statement (for ,while ,foreach)-->
+<select class="form form-control">
+    <option>--default---</option>
+    @for(int i = 0; i < 10; i++)
+    {
+        <option>@i</option>
+    }
+</select>

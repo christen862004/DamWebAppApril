@@ -1,0 +1,21 @@
+﻿<!--List<Student> Model ==>Table-->
+   <table class="table table-hover table-bordered">
+       <tr>
+           <th>ID</th>
+           <th>Name</th>
+           <th>Image</th>
+       </tr>
+
+       @foreach (Student item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.ImageURl</td>
+            <td>
+                <img src="/Images/@item.ImageURl" style="width:100px" />
+            </td>
+        </tr>
+    }
+   </table>
+
