@@ -1,12 +1,17 @@
-﻿<!--List<Student> Model ==>Table-->
+﻿<!--Lossly type View based ion Model with type dynamic-->
+<!--Strong type view-->
+<!--Razor Sntaxy deterem Generic Type-->
+@model List<Student> 
+
+
+<!--List<Student> Model ==>Table-->
    <table class="table table-hover table-bordered">
        <tr>
            <th>ID</th>
            <th>Name</th>
            <th>Image</th>
        </tr>
-
-       @foreach (Student item in Model)
+    @foreach (Student item in Model)
     {
         <tr>
             <td>@item.Id</td>

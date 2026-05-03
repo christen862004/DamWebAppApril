@@ -1,0 +1,40 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Details";//set who ?????????????????? 
+}
+<!--Get from ViewData-->
+<h1>Details</h1>
+<h1 style="color:@ViewData["Color"]">@Model.Name</h1>
+<h1 style="color:@ViewBag.Color">@Model.Name</h1>
+
+
+<hr />
+<h3>Your Level @ViewData["Level"]</h3>
+<h3>Your Level @ViewBag.Level</h3>
+
+
+<hr />
+<h3>Your Grade is @(int.Parse(ViewData["Grade"].ToString())+1)</h3>
+<h3>Your Grade is @(ViewBag.Grade+1)</h3>
+
+<hr />
+<select class="form form-control">
+    @foreach (var item in (List<Department>)ViewData["DeptList"])
+    {
+        <option>@item.Name</option>
+    }
+</select>
+<select class="form form-control">
+    @foreach (var item in ViewBag.DeptList)
+    {
+        <option>@item.Name</option>
+    }
+</select>
+
+<!--
+- ViewData Problem
+1) Magix string (dic key   (ViewBag)
+2) type casting(unboxing)   (runtime ==>Thorw Exception instead of Error)
+
+-->
+@* <a href="">Back To list</a> *@
