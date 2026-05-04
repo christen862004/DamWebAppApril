@@ -7,6 +7,57 @@ namespace DamWebAppApril.Controllers
     public class EmployeeController : Controller
     {
         ITIContext context = new ITIContext();
+        public IActionResult Index()
+        {
+            List<Employee> employees = context.Employees.ToList();
+            return View("Index", employees);
+        }
+        #region Edit
+        public IActionResult Edit(int id)
+        {
+            //Collect
+            Employee EmpModel = context.Employees.FirstOrDefault(e => e.Id == id);
+            List<Department> DeptList = context.Departments.ToList();
+            if(EmpModel == null) {
+                return NotFound();
+            }
+            //delclare & map
+            EmpWithDeptListViewModel empVM = new EmpWithDeptListViewModel()
+            {
+                Id = EmpModel.Id,
+                EmpName = EmpModel.Name,
+                NetSalary = EmpModel.Salary,
+                DepartmentID = EmpModel.DepartmentID,
+                ImageURl = EmpModel.ImageURl,
+                DeptList = DeptList
+            };
+            //retunr
+            return View("Edit", empVM);//view =>Edit ,Model =>EmpWithDeptListViewModel
+        }
+        /**
+         * /Employee/SaveEdit/1
+            Name=ahmed,Salary=10000,ImageURl=m.png,DepartmentID=1
+         */
+        //public IActionResult SaveEdit(int id,string name,string imageURl,int DepartmentID,int salary)
+        [HttpPost]
+        public IActionResult SaveEdit(EmpWithDeptListViewModel EmpFromRequest)
+        {
+            if (EmpFromRequest.EmpName != null)
+            {
+                //save
+                Employee EmpFromDB = context.Employees.FirstOrDefault(e => e.Id == EmpFromRequest.Id);
+                EmpFromDB.Name=EmpFromRequest.EmpName;
+                EmpFromDB.Salary=EmpFromRequest.NetSalary;
+                EmpFromDB.ImageURl=EmpFromRequest.ImageURl;
+                EmpFromDB.DepartmentID=EmpFromRequest.DepartmentID;
+                context.SaveChanges();
+                return RedirectToAction(actionName:"Index",controllerName:"Employee");
+            }
+            EmpFromRequest.DeptList = context.Departments.ToList();//refill incorretc data
+            return View("Edit",EmpFromRequest);
+        }
+        #endregion
+        #region Details
         //Employee/Details/1
         public IActionResult Details(int id)
         {
@@ -48,5 +99,6 @@ namespace DamWebAppApril.Controllers
             //4) return to view
             return View("DetailsVM", empVM);//go to view Model ==> EmpWithGradeLevelDeptListViewModel
         }
+        #endregion
     }
 }

@@ -53,8 +53,10 @@ namespace DamWebAppApril.Controllers
         //}
         //Home/ShowMix?id=1&no=10&name=ahmed (query String)
         //Home/ShowMix/99?no=10&name=ahmed (query String)
-        public IActionResult ShowMix(int id,int no,string name)
+        public IActionResult ShowMix(int id,int no,string name)//ModelBinding
         {
+         //   Request.RouteValues.ContainsKey("Id")
+               
             if (id % 2 == 0)
             {
                 //logic
