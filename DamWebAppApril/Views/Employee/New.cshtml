@@ -1,0 +1,32 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "New";
+    //explicit cast List<Department> =>Ienumerable<SelectLidtItem>
+    SelectList options = new SelectList(ViewBag.DeptList,dataValueField:"Id",dataTextField:"Name");
+
+}
+
+<h1>New</h1>
+<form asp-action="SaveNew" asp-controller="Employee" method="post">
+    <div>
+        <label asp-for="Name"></label>
+        <input class="form form-control" asp-for="Name" />
+    </div>
+    <div>
+        <label asp-for="Salary"></label>
+        <input class="form form-control"  asp-for="Salary"/>
+    </div>
+    <div>
+        <label asp-for="ImageURl"></label>
+        <input class="form form-control" asp-for="ImageURl" />
+    </div>
+    <div>
+        <label asp-for="DepartmentID"></label>
+        <select class="form form-control" asp-for="DepartmentID" asp-items="options">
+            <option value="0">-- Select --</option>
+        </select>
+    </div>
+    <input type="submit" value="Create" class="btn btn-danger" />
+</form>
+
+<a asp-action="Index" asp-controller="Employee">Bac To List</a>

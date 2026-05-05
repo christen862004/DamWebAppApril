@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div style="background-color:aqua;margin:10px;padding:5px;font-size:25px;height:200px">
+        Header
+        <!--Secondary Contnet many unique name-->
+        <div style="background-color:antiquewhite">
+            @RenderSection("HeaderSection") <!--Requier section-->
+        </div>
+
+    </div>
+    <div style="background-color:antiquewhite">
+        <!--Main Content-->
+        @RenderBody()
+    </div>
+    <div style="background-color:aqua;margin:10px;padding:5px;font-size:15px;height:75px">
+        Footer
+        <div style="background-color:antiquewhite">
+            @RenderSection("FooterSection",false)<!--Optional-->
+        </div>
+    </div>
+</body>
+</html>

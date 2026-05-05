@@ -1,6 +1,7 @@
 ﻿using DamWebAppApril.Models;
 //using DamWebAppApril.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DamWebAppApril.Controllers
 {
@@ -12,6 +13,29 @@ namespace DamWebAppApril.Controllers
             List<Employee> employees = context.Employees.ToList();
             return View("Index", employees);
         }
+        #region NEw
+        public IActionResult New()
+        {
+            ViewBag.DeptList = context.Departments.ToList();
+            //ViewBag.DeptList = new SelectList( context.Departments.ToList(),"ID","Name");
+            return View("New");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]//handel internal request only not external by token
+        public IActionResult SaveNew(Employee empFromReq)
+        {
+            if (empFromReq.Name != null && empFromReq.Salary > 7000)
+            {
+                context.Employees.Add(empFromReq);//id=0;
+                context.SaveChanges(); //id identity
+                return RedirectToAction("Index", "Employee");
+            }
+            ViewBag.DeptList = context.Departments.ToList();
+           // IEnumerable<SelectListItem> list= context.Departments.ToList()
+            return View("New", empFromReq);
+        }
+        #endregion
+
         #region Edit
         public IActionResult Edit(int id)
         {
@@ -59,7 +83,7 @@ namespace DamWebAppApril.Controllers
         #endregion
         #region Details
         //Employee/Details/1
-        public IActionResult Details(int id)
+        public IActionResult Details(int id,string name)
         {
             //need to Send some Extra Info to View 
             string EvalLevel = "Excellent";

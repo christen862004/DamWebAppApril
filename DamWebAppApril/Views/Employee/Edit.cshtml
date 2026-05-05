@@ -7,11 +7,23 @@
 <!--/Employee/SaveEdit/1
     Name=ahmed,Salary=10000,ImageURl=m.png,DepartmentID=1
 -->
-<form action="/Employee/SaveEdit" method="post">
-    <input type="hidden" name="ID" value="@Model.Id" />
+
+<form asp-action="SaveEdit" asp-controller="Employee" asp-route-id="@Model.Id" method="post">
+    @* <input type="hidden" name="ID" value="@Model.Id" /> *@
     <div>
-        <label>Name</label>
-        <input class="form-control" type="text" id="EmpName" name="EmpName" value="@Model?.EmpName" />
+        <!--Tag Helper-->
+        <label asp-for="EmpName"></label>
+        <input class="form-control"  asp-for="EmpName"/> 
+       
+        <!--Pure HTML-->
+       @*  <label>Name</label>
+        <input class="form-control" type="text" id="EmpName" name="EmpName" value="@Model?.EmpName" /> *@
+        <!--Pure C# HTML Helper-->
+        @* @Html.LabelFor(e => e.EmpName) *@
+        @* @Html.TextBoxFor(e => e.EmpName,
+            htmlAttributes: new { style = "color:red",@class="form-control" }) *@
+@* 
+        @Html.EditorFor(e=>e.EmpName) *@
     </div>
     <div>
         <label>Salary</label>
@@ -42,5 +54,22 @@
     <input type="submit" value="Save" class="btn btn-success"/>
 </form>
 
-<a href="/Employee">Back To List</a>
+<a href="/Employee">Back To List</a> - <!--relative on Domian-->
+<a href="/Employee/Index">Back To List</a> - 
+@Html.ActionLink(linkText:"Back To List",actionName:"Index",controllerName:"Employee") - 
+<a asp-action="Index" asp-controller="Employee">Back To List</a> -
 
+<!----------------------------------->
+<hr />
+<a href="/Employee/Details/@Model.Id?name=@Model.EmpName" class="btn btn-success">details</a> - 
+<a href="/Employee/Details?id=@Model.Id&name=@Model.EmpName">details</a> - 
+@Html.ActionLink(
+    linkText:"Details Link"
+    ,actionName:"Details"
+    ,controllerName:"Employee"
+    ,routeValues:new{id=Model.Id,name=Model.EmpName}
+    ,htmlAttributes: new { @class = "btn btn-success" }) - 
+<a asp-action="Details" asp-controller="Employee" asp-route-id="@Model.Id"
+asp-route-name="@Model.EmpName" class="btn btn-success">details</a> -
+
+<hr />
