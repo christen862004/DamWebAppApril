@@ -12,6 +12,6 @@ namespace DamWebAppApril.ViewModel
         public string? ImageURl { get; set; }
         public int NetSalary { get; set; }
         public int DepartmentID { get; set; }
-        public List<Department> DeptList { get; set; }
+        public List<Department>? DeptList { get; set; }
     }
 }

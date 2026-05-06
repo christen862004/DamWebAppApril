@@ -8,25 +8,40 @@
 
 <h1>New</h1>
 <form asp-action="SaveNew" asp-controller="Employee" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
     <div>
         <label asp-for="Name"></label>
         <input class="form form-control" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="Salary"></label>
         <input class="form form-control"  asp-for="Salary"/>
+        <span asp-validation-for="Salary" class="text-danger"></span>
+
     </div>
     <div>
         <label asp-for="ImageURl"></label>
         <input class="form form-control" asp-for="ImageURl" />
+        <span asp-validation-for="ImageURl" class="text-danger"></span>
+
     </div>
     <div>
         <label asp-for="DepartmentID"></label>
         <select class="form form-control" asp-for="DepartmentID" asp-items="options">
             <option value="0">-- Select --</option>
         </select>
+        <span asp-validation-for="DepartmentID" class="text-danger"></span>
+
     </div>
     <input type="submit" value="Create" class="btn btn-danger" />
 </form>
 
 <a asp-action="Index" asp-controller="Employee">Bac To List</a>
+<!--Jqury Link to Acive Client Side Valiadtion-->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+

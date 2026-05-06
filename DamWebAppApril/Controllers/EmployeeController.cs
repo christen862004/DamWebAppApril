@@ -13,6 +13,13 @@ namespace DamWebAppApril.Controllers
             List<Employee> employees = context.Employees.ToList();
             return View("Index", employees);
         }
+        //Employee/CheckSalary?Salary=900
+        public IActionResult CheckSalary(int Salary,int DepartmentID)
+        {
+            if (Salary > 7000)
+                return Json(true);
+            return Json("Salary Must Be More Than 7000");
+        }
         #region NEw
         public IActionResult New()
         {
@@ -24,11 +31,20 @@ namespace DamWebAppApril.Controllers
         [ValidateAntiForgeryToken]//handel internal request only not external by token
         public IActionResult SaveNew(Employee empFromReq)
         {
-            if (empFromReq.Name != null && empFromReq.Salary > 7000)
+            //if (empFromReq.Name != null && empFromReq.Salary > 7000)
+            if(ModelState.IsValid==true)
             {
-                context.Employees.Add(empFromReq);//id=0;
-                context.SaveChanges(); //id identity
-                return RedirectToAction("Index", "Employee");
+                try
+                {
+                    context.Employees.Add(empFromReq);//id=0;deptiId=0
+                    context.SaveChanges(); //id identity
+                    return RedirectToAction("Index", "Employee");
+                }catch(Exception ex)
+                {
+                    //send exception view span department message error
+                    //ModelState.AddModelError("DepartmentID", "Please Select Department");
+                    ModelState.AddModelError("anyKey",ex.InnerException.Message);//Display in div
+                }
             }
             ViewBag.DeptList = context.Departments.ToList();
            // IEnumerable<SelectListItem> list= context.Departments.ToList()
