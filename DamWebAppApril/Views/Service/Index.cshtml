@@ -1,0 +1,13 @@
+﻿@using DamWebAppApril.Repository
+@inject IService service
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<h2>Service Id From Controller</h2>
+<h3>@ViewBag.Id</h3>
+<hr />
+<h2>Service Id From View</h2>
+<h3>@service.Id</h3>

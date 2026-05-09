@@ -1,14 +1,20 @@
 ﻿using DamWebAppApril.Models;
+using DamWebAppApril.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DamWebAppApril.Controllers
 {
     public class DepartmentController : Controller
     {
-        ITIContext context = new ITIContext();
+        // ITIContext context = new ITIContext();
+        DepartmentRepository deptRepo;
+        public DepartmentController()
+        {
+            deptRepo = new DepartmentRepository();
+        }
         public IActionResult Index()
         {
-            List<Department> deptList = context.Departments.ToList();
+            List<Department> deptList = deptRepo.GetAll();
             return View("Index",deptList);//Model: List<Department>
         }
         #region New
@@ -27,8 +33,8 @@ namespace DamWebAppApril.Controllers
                 if (deptFromRequest.Name != null)//check 
                 {
                     //save
-                    context.Departments.Add(deptFromRequest);
-                    context.SaveChanges();
+                    deptRepo.Add(deptFromRequest);
+                    deptRepo.Save();    
                     return RedirectToAction("Index", "Department", routeValues: new { id = deptFromRequest.Id });//Model Null
                 }
                 //return viwew new

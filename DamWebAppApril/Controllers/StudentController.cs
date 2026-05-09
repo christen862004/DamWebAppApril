@@ -1,4 +1,5 @@
 ﻿using DamWebAppApril.Models;
+using DamWebAppApril.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DamWebAppApril.Controllers
@@ -9,7 +10,6 @@ namespace DamWebAppApril.Controllers
         //Stuednt/all
         public IActionResult All()
         {
-            
             List<Student> stds=  StudentBL.GetAll();
             return View("ShowAll",stds);//go to view with name ShowAll,go to view object with type List<Student>
         }

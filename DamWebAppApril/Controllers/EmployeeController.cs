@@ -1,4 +1,6 @@
 ﻿using DamWebAppApril.Models;
+using DamWebAppApril.Repository;
+
 //using DamWebAppApril.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,10 +9,17 @@ namespace DamWebAppApril.Controllers
 {
     public class EmployeeController : Controller
     {
-        ITIContext context = new ITIContext();
+        IEmployeeRepository EmpRepo;
+        IDepartmentRepository DeptRepo;
+        public EmployeeController(IEmployeeRepository empRepo, IDepartmentRepository deptRepo)
+        {
+            EmpRepo = empRepo;//dont create ,ask about object implement interface 
+            DeptRepo = deptRepo;
+        }
+        // ITIContext context = new ITIContext();
         public IActionResult Index()
         {
-            List<Employee> employees = context.Employees.ToList();
+            List<Employee> employees = EmpRepo.GetAll();
             return View("Index", employees);
         }
         //Employee/CheckSalary?Salary=900
@@ -23,7 +32,7 @@ namespace DamWebAppApril.Controllers
         #region NEw
         public IActionResult New()
         {
-            ViewBag.DeptList = context.Departments.ToList();
+            ViewBag.DeptList = DeptRepo.GetAll();
             //ViewBag.DeptList = new SelectList( context.Departments.ToList(),"ID","Name");
             return View("New");
         }
@@ -36,8 +45,8 @@ namespace DamWebAppApril.Controllers
             {
                 try
                 {
-                    context.Employees.Add(empFromReq);//id=0;deptiId=0
-                    context.SaveChanges(); //id identity
+                    EmpRepo.Add(empFromReq);//id=0;deptiId=0
+                    EmpRepo.Save();
                     return RedirectToAction("Index", "Employee");
                 }catch(Exception ex)
                 {
@@ -46,7 +55,7 @@ namespace DamWebAppApril.Controllers
                     ModelState.AddModelError("anyKey",ex.InnerException.Message);//Display in div
                 }
             }
-            ViewBag.DeptList = context.Departments.ToList();
+            ViewBag.DeptList = DeptRepo.GetAll();
            // IEnumerable<SelectListItem> list= context.Departments.ToList()
             return View("New", empFromReq);
         }
@@ -56,8 +65,8 @@ namespace DamWebAppApril.Controllers
         public IActionResult Edit(int id)
         {
             //Collect
-            Employee EmpModel = context.Employees.FirstOrDefault(e => e.Id == id);
-            List<Department> DeptList = context.Departments.ToList();
+            Employee EmpModel = EmpRepo.GetByID(id);
+            List<Department> DeptList = DeptRepo.GetAll();
             if(EmpModel == null) {
                 return NotFound();
             }
@@ -84,26 +93,30 @@ namespace DamWebAppApril.Controllers
         {
             if (EmpFromRequest.EmpName != null)
             {
-                //save
-                Employee EmpFromDB = context.Employees.FirstOrDefault(e => e.Id == EmpFromRequest.Id);
-                EmpFromDB.Name=EmpFromRequest.EmpName;
-                EmpFromDB.Salary=EmpFromRequest.NetSalary;
-                EmpFromDB.ImageURl=EmpFromRequest.ImageURl;
-                EmpFromDB.DepartmentID=EmpFromRequest.DepartmentID;
-                context.SaveChanges();
+                //mapping package auomapper
+                Employee EmpObj = new Employee();
+                EmpObj.Id = EmpFromRequest.Id;
+                EmpObj.Name=EmpFromRequest.EmpName;
+                EmpObj.Salary=EmpFromRequest.NetSalary;
+                EmpObj.ImageURl=EmpFromRequest.ImageURl;
+                EmpObj.DepartmentID=EmpFromRequest.DepartmentID;
+
+                EmpRepo.Update(EmpObj);
+                EmpRepo.Save();
                 return RedirectToAction(actionName:"Index",controllerName:"Employee");
             }
-            EmpFromRequest.DeptList = context.Departments.ToList();//refill incorretc data
+            EmpFromRequest.DeptList = DeptRepo.GetAll();
             return View("Edit",EmpFromRequest);
         }
         #endregion
+
         #region Details
         //Employee/Details/1
         public IActionResult Details(int id,string name)
         {
             //need to Send some Extra Info to View 
             string EvalLevel = "Excellent";
-            List<Department> DeptList = context.Departments.ToList();
+            List<Department> DeptList = DeptRepo.GetAll();
             int Grade = 1;
             //Set on viewdata
             //boxing
@@ -114,7 +127,7 @@ namespace DamWebAppApril.Controllers
             ViewBag.Color = "red";
             ViewData["Color"] = "Blue";
 
-            Employee EmpModel= context.Employees.FirstOrDefault(e=>e.Id== id);
+            Employee EmpModel= EmpRepo.GetByID(id);
             return View("Details",EmpModel);
         }
         public IActionResult DetailsVM(int id)
@@ -122,9 +135,9 @@ namespace DamWebAppApril.Controllers
             //1) collect data
             //need to Send some Extra Info to View 
             string EvalLevel = "Excellent";
-            List<Department> DeptList = context.Departments.ToList();
+            List<Department> DeptList = DeptRepo.GetAll();
             int EmpGrade = 1;
-            Employee EmpModel = context.Employees.FirstOrDefault(e => e.Id == id);
+            Employee EmpModel = EmpRepo.GetByID(id);
 
             //3) Map
             //2) decalre VM

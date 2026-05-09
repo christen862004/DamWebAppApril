@@ -8,7 +8,7 @@ namespace DamWebAppApril.Models
         {
             ITIContext context = new ITIContext();
             string name = value.ToString();
-            //unique per department from req
+            //unique per100 department from req
             Employee? empFromRequest = validationContext.ObjectInstance as Employee;
 
             Employee empFromDatabase= context.Employees
