@@ -5,9 +5,9 @@ namespace DamWebAppApril.Repository
     public class DepartmentRepository : IDepartmentRepository
     {
         ITIContext context;
-        public DepartmentRepository()
+        public DepartmentRepository(ITIContext _ctx)
         {
-            context= new ITIContext();
+            context = _ctx;// new ITIContext();
         }
         //CRUD
         public void Add(Department entity)

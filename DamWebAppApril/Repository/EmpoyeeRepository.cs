@@ -7,9 +7,9 @@ namespace DamWebAppApril.Repository
     {
         //CRUD :Create - Read - Upadte - Delete ++
         ITIContext context;
-        public EmployeeRepository()
+        public EmployeeRepository(ITIContext _ctx)
         {
-            context=new ITIContext();
+            context =_ctx;// new ITIContext();//use pameterless - parmeter constructor
         }
         public void Add(Employee entity)
         {

@@ -7,10 +7,10 @@ namespace DamWebAppApril.Controllers
     public class DepartmentController : Controller
     {
         // ITIContext context = new ITIContext();
-        DepartmentRepository deptRepo;
-        public DepartmentController()
+        IDepartmentRepository deptRepo;
+        public DepartmentController(IDepartmentRepository _deptRepo)
         {
-            deptRepo = new DepartmentRepository();
+            deptRepo = _deptRepo;
         }
         public IActionResult Index()
         {
