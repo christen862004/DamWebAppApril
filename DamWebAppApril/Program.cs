@@ -1,5 +1,7 @@
+using DamWebAppApril.Filtters;
 using DamWebAppApril.Models;
 using DamWebAppApril.Repository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -14,7 +16,11 @@ namespace DamWebAppApril
             // Add services to the container. Day6
             // 1) build in service (interface ,class) ,already register
             // 2) build in service (interface ,calss) ,need to register (optional Service)
+            //builder.Services.AddControllersWithViews(options => {
+            //    options.Filters.Add(new HandelErrorAttribute());//global filter attribute
+            //});
             builder.Services.AddControllersWithViews();
+
             builder.Services.AddDbContext<ITIContext>(optionBuilder =>
             {
                 optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
@@ -59,14 +65,29 @@ namespace DamWebAppApril
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            app.UseStaticFiles();
+            app.UseStaticFiles();//check if request ==>wwwroote
 
-            app.UseRouting();
+            app.UseRouting();//mapping "Security"
 
             app.UseSession();//middlewar enot configure
 
             app.UseAuthorization();
 
+            #region Naming Converntion Route
+            //app.MapControllerRoute(name: "Route1", pattern: "r1/{age:int:range(20,60)}/{name?}"
+            //    , defaults: new { controller ="Route",action="M1"});    
+            //app.MapControllerRoute(name: "Route1", pattern: "r1"
+            //    , defaults: new { controller ="Route",action="M1"});
+            //app.MapControllerRoute(name: "Route2", pattern: "r2"
+            //   , defaults: new { controller = "Route", action = "M2" });
+            //app.MapControllerRoute(name: "Route1", pattern: "{controller}/{action}/{id?}"
+            // , defaults: new { controller = "Home", action = "index" });
+
+            #endregion
+
+
+
+            //Staff Decalre ,execute
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
