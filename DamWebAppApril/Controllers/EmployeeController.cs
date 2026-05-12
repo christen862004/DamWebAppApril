@@ -1,5 +1,7 @@
 ﻿using DamWebAppApril.Models;
 using DamWebAppApril.Repository;
+using Microsoft.AspNetCore.Authorization;
+
 
 //using DamWebAppApril.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +19,7 @@ namespace DamWebAppApril.Controllers
             DeptRepo = deptRepo;
         }
         // ITIContext context = new ITIContext();
+        [Authorize]//check cookie foune enter ,not founder redirect to login
         public IActionResult Index()
         {
             List<Employee> employees = EmpRepo.GetAll();

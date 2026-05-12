@@ -1,6 +1,7 @@
 using DamWebAppApril.Filtters;
 using DamWebAppApril.Models;
 using DamWebAppApril.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -31,6 +32,15 @@ namespace DamWebAppApril
                 option.IdleTimeout = TimeSpan.FromMinutes(30);
 
             });//register session service ==>Middleware +
+            
+            builder.Services.AddIdentity<AppliactionUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+
+            }).AddEntityFrameworkStores<ITIContext>();
+            //register all manager +determine auth schem
             
             // 3) Custom service , need to register
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
