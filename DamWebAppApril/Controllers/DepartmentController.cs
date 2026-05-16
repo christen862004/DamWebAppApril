@@ -1,5 +1,6 @@
 ﻿using DamWebAppApril.Models;
 using DamWebAppApril.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DamWebAppApril.Controllers
@@ -12,6 +13,7 @@ namespace DamWebAppApril.Controllers
         {
             deptRepo = _deptRepo;
         }
+        [Authorize(Roles ="Admin")]
         public IActionResult Index()
         {
             List<Department> deptList = deptRepo.GetAll();

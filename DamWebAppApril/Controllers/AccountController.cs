@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
+using System.Security.Claims;
 
 namespace DamWebAppApril.Controllers
 {
@@ -37,6 +38,8 @@ namespace DamWebAppApril.Controllers
                 //add user db
                 IdentityResult result= await userManager.CreateAsync(appUser,userFromReq.Password);
                 if (result.Succeeded) {
+                    //Assign role to specific user
+                    await userManager.AddToRoleAsync(appUser, "Admin");
                     //create cookie
                     await signInManager.SignInAsync(appUser,isPersistent:false);//create cookie (default Claims[id,username,email?,role?])
                     return RedirectToAction("Index", "Employee");
@@ -69,7 +72,10 @@ namespace DamWebAppApril.Controllers
                     if (found)
                     {
                         //cookie
-                        await signInManager.SignInAsync(appUser, userFromReq.RememberMe);
+                        List<Claim> addClaim=new List<Claim>();
+                        addClaim.Add(new Claim("Address", appUser.Address));
+
+                        await signInManager.SignInWithClaimsAsync(appUser, userFromReq.RememberMe, addClaim);//id ,name,role?,email?,address
                         return RedirectToAction("Index", "Employee");
                     }
                 }
